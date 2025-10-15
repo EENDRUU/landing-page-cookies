@@ -720,7 +720,7 @@
             <h2 class="section-title">Customer Reviews</h2>
             <div class="reviews-container">
                 <div class="review-form-container">
-                    <h3>Share Your Experience</h3>
+                    <h3>Share Your Experience333</h3>
                     <form id="reviewForm">
                         <div class="form-group">
                             <label for="reviewerName">Your Name</label>
@@ -1038,27 +1038,52 @@
   }
 
   // --- SUBMIT REVIEW TO FIRESTORE ---
-  reviewForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const name = document.getElementById('reviewerName').value;
-    const text = document.getElementById('reviewText').value;
-    const rating = parseInt(ratingInput.value);
+reviewForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
 
-    try {
-      await addDoc(collection(db, 'reviews'), {
-        name, text, rating, date: serverTimestamp()
-      });
-      alert('Thank you for your review!');
-      reviewForm.reset();
-      currentRating = 5;
-      ratingInput.value = 5;
-      updateStars();
-      loadReviews();
-    } catch (error) {
-      console.error("Error submitting review:", error);
+  // Ambil nilai input
+  const name = document.getElementById('reviewerName').value.trim();
+  const text = document.getElementById('reviewText').value.trim();
+  const rating = parseInt(ratingInput.value);
+
+  // Validasi sederhana sebelum submit
+  if (!name || !text || isNaN(rating) || rating < 1 || rating > 5) {
+    alert('Please fill in all fields and select a valid rating.');
+    return;
+  }
+
+  try {
+    // Tambahkan review ke Firestore (v9 modular)
+    await addDoc(collection(db, 'reviews'), {
+      name: name,
+      text: text,
+      rating: rating,
+      date: serverTimestamp() // timestamp server
+    });
+
+    // Tampilkan pesan sukses
+    alert('Thank you for your review!');
+
+    // Reset form dan rating
+    reviewForm.reset();
+    currentRating = 5;
+    ratingInput.value = 5;
+    updateStars();
+
+    // Load ulang review terbaru
+    loadReviews();
+  } catch (error) {
+    console.error("Error submitting review:", error);
+
+    // Pesan error spesifik untuk developer
+    if (error.code === 'permission-denied') {
+      alert('You do not have permission to write reviews. Check Firestore rules.');
+    } else {
       alert('Error submitting review. Please try again.');
     }
-  });
+  }
+});
+
 
   // --- INIT PAGE ---
   document.addEventListener('DOMContentLoaded', () => {
