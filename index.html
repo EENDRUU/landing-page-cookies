@@ -6,8 +6,6 @@
     <title>SweetBites Cookies | Homemade Delights</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="  https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css  ">
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
     <style>
         :root {
             --pastel-pink: #ffd6e7;
@@ -908,7 +906,8 @@
     addDoc,
     serverTimestamp,
     query,
-    orderBy
+    orderBy,
+    enableIndexedDbPersistence
   } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
   // Initialize Firebase
@@ -924,6 +923,16 @@
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
+
+  // Enable offline persistence
+  enableIndexedDbPersistence(db).catch(err => {
+    if (err.code === 'failed-precondition') {
+      console.warn("Persistence failed: multiple tabs open");
+    } else if (err.code === 'unimplemented') {
+      console.warn("Persistence not available");
+    }
+  });
+
 
   // DOM elements
   const menuContainer = document.getElementById('menuContainer');
