@@ -1,1 +1,30 @@
-[{"id":1,"name":"Choco Chip Cookies","description":"Classic chocolate chip cookies with rich dark chocolate chunks.","price":28000,"icon":"fa-cookie"},{"id":2,"name":"Red Velvet Crinkles","description":"Soft red velvet cookies with cream cheese filling.","price":32000,"icon":"fa-cookie-bite"},{"id":3,"name":"Matcha Almond Cookies","description":"Earthy matcha with crunchy almond slices.","price":30000,"icon":"fa-leaf"},{"id":4,"name":"Rainbow Sprinkle Cookies","description":"Fun and colorful cookies with rainbow sprinkles.","price":29000,"icon":"fa-rainbow"}]
+[
+    {
+        "id": 1,
+        "name": "Choco Chip Cookies",
+        "description": "Classic chocolate chip cookies with rich dark chocolate chunks.",
+        "price": 28000,
+        "icon": "fa-cookie"
+    },
+    {
+        "id": 2,
+        "name": "Red Velvet Crinkles",
+        "description": "Soft red velvet cookies with cream cheese filling.",
+        "price": 32000,
+        "icon": "fa-cookie-bite"
+    },
+    {
+        "id": 3,
+        "name": "Matcha Almond Cookies",
+        "description": "Earthy matcha with crunchy almond slices.",
+        "price": 30000,
+        "icon": "fa-leaf"
+    },
+    {
+        "id": 4,
+        "name": "Rainbow Sprinkle Cookies",
+        "description": "Fun and colorful cookies with rainbow sprinkles.",
+        "price": 29000,
+        "icon": "fa-rainbow"
+    }
+]

@@ -897,7 +897,7 @@
     </footer>
 
 <script type="module">
-  // Import Firebase SDK (v9 modular)
+  // Import Firebase SDK (v9 modular) untuk review
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
   import {
     getFirestore,
@@ -957,12 +957,13 @@
     });
   }
 
-  // --- LOAD MENU FROM FIRESTORE ---
+  // --- LOAD MENU DARI FILE JSON ---
   async function loadMenu() {
     try {
-      const menuSnapshot = await getDocs(collection(db, 'menu'));
-      const menuData = [];
-      menuSnapshot.forEach(doc => menuData.push({ id: doc.id, ...doc.data() }));
+      const response = await fetch('data/menu.json');
+      if (!response.ok) throw new Error('Failed to fetch menu.json');
+
+      const menuData = await response.json();
 
       if (menuData.length === 0) {
         menuContainer.innerHTML = '<p>Menu kosong. Admin belum menambahkan menu.</p>';
@@ -986,7 +987,7 @@
     }
   }
 
-  // --- LOAD REVIEWS FROM FIRESTORE ---
+  // --- LOAD REVIEWS DARI FIRESTORE ---
   async function loadReviews() {
     try {
       const q = query(collection(db, 'reviews'), orderBy('date', 'desc'));
@@ -1026,12 +1027,17 @@
     }
   }
 
-  // --- SUBMIT REVIEW TO FIRESTORE ---
+  // --- SUBMIT REVIEW KE FIRESTORE ---
   reviewForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const name = document.getElementById('reviewerName').value;
-    const text = document.getElementById('reviewText').value;
+    const name = document.getElementById('reviewerName').value.trim();
+    const text = document.getElementById('reviewText').value.trim();
     const rating = parseInt(ratingInput.value);
+
+    if (!name || !text || isNaN(rating) || rating < 1 || rating > 5) {
+      alert('Please fill in all fields and select a valid rating.');
+      return;
+    }
 
     try {
       await addDoc(collection(db, 'reviews'), {
@@ -1052,10 +1058,11 @@
   // --- INIT PAGE ---
   document.addEventListener('DOMContentLoaded', () => {
     updateStars();
-    loadMenu();
-    loadReviews();
+    loadMenu();    // baca dari file JSON lokal
+    loadReviews(); // tetap dari Firestore
   });
 </script>
+
 
 </body>
 </html>
